@@ -1,0 +1,14 @@
+list:
+    model: 'App\Arrival\models\MyModel'
+    title: 'Arrivals'
+    toolbar:
+        buttons: context
+columns:
+    id:
+        label: 'ID'
+        searchable: true
+        sortable: true
+    name:
+        label: 'Name'
+        searchable: true
+        sortable: true
