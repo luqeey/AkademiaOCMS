@@ -1,4 +1,5 @@
-<?php namespace App\Arrival;
+<?php 
+namespace App\Arrival;
 
 use Backend;
 use System\Classes\PluginBase;
@@ -30,10 +31,9 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-        $this->registerController('App\Arrival\Controllers\Arrivals');
-        $this->registerModel('App\Arrival\Models\Arrival');
+        $this->registerController('App\Arrival\controllers\arrivals');
+        $this->registerModel('App\Arrival\models\arrival');
     }
-
     /**
      * Boot method, called right before the request route.
      *
@@ -81,12 +81,11 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-        return []; // Remove this line to activate
 
         return [
             'arrival' => [
                 'label'       => 'Arrival',
-                'url'         => Backend::url('app/arrival/mycontroller'),
+                'url'         => Backend::url('app/arrival/arrivals'),
                 'icon'        => 'icon-leaf',
                 'permissions' => ['app.arrival.*'],
                 'order'       => 500,
