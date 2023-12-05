@@ -1,5 +1,5 @@
 <?php 
-namespace App\Arrival\controllers;
+namespace App\Arrival\Controllers;
 
 use BackendMenu;
 use Backend\Classes\Controller;

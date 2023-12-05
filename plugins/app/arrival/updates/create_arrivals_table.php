@@ -1,4 +1,5 @@
-<?php namespace App\Arrival\Updates;
+<?php 
+namespace App\Arrival\Updates;
 
 use Schema;
 use October\Rain\Database\Schema\Blueprint;
@@ -11,6 +12,7 @@ class CreateArrivalsTable extends Migration
         Schema::create('app_arrival_arrivals', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('name');
             $table->timestamps();
         });
     }
