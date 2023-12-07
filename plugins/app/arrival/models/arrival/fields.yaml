@@ -6,3 +6,9 @@ fields:
     id:
         label: ID
         disabled: true
+    name:
+        label: Name 
+        type: text
+    # arrival_date:
+    #     label: Arrival Date
+    #     type: date
