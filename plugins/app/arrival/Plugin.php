@@ -17,13 +17,6 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerComponents()
-    {
-        return [
-            'App\Arrival\Components\MyComponent' => 'myComponent',
-        ];
-    }
-
     public function registerPermissions()
     {
         return [

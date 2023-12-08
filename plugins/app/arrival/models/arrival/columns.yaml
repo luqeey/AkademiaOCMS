@@ -9,8 +9,8 @@ columns:
     name:
         label: Name
         type: text
-    # arrival_date:
-    #     label: Arrival Date
-    #     type: date
-        
+    created_at:
+        label: Date
+        type: datetime
+        useTimezone: true
 
