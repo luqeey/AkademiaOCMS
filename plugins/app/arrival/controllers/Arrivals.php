@@ -3,6 +3,7 @@ namespace App\Arrival\Controllers;
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use App\Arrival\Models\Arrival;
 
 /**
  * Arrivals Back-end Controller
@@ -33,4 +34,16 @@ class Arrivals extends Controller
 
         BackendMenu::setContext('App.Arrival', 'arrival', 'arrivals');
     }
+
+    public function apiMethod()
+{
+    try {
+        $data = Arrival::all();
+
+        return response()->json($data);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 }
