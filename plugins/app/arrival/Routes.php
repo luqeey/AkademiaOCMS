@@ -1,5 +1,13 @@
 <?php
 
-Route::group(['prefix' => 'api'], function () {
-    Route::get('kokoti/primitivovia', 'App\Arrival\Controllers\Arrivals@apiMethod');
+use App\Arrival\Models\Arrival;
+
+Route::get('api/kokoti/primitivovia', function () {
+    try {
+        $data = Arrival::all();
+
+        return response()->json($data);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e -> getMessage()], 500);
+    }
 });
