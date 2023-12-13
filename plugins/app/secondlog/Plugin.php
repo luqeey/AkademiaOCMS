@@ -4,23 +4,30 @@ namespace App\SecondLog;
 
 use System\Classes\PluginBase;
 use App\Arrival\Models\Arrival;
-use Log;
+use App\SecondLog\Models\Log;
 
-/**
- * SecondLog Plugin Information File
- */
 class Plugin extends PluginBase
 {
-    /**
-     * Boot method, called right before the request route.
-     *
-     * @return array
-     */
-    public function boot()
+    public function pluginDetails()
     {
-        Arrival::creating(function ($model) {
-            Log::info('Arrival is being created:', ['name' => $model->name, 'created_at' => $model->created_at]);
-        });
+        return [
+            'name'        => 'SecondLog',
+            'description' => 'No description provided yet...',
+            'author'      => 'App',
+            'icon'        => 'icon-laptop'
+        ];
     }
 
+    public function boot()
+{
+    Arrival::extend(function($model) {
+        $model->hasOne['log'] = ['App\SecondLog\Models\Log', 'key' => 'arrival_id'];
+
+        $model->bindEvent('model.afterUpdate', function () use ($model) {
+            if ($model->log) {
+                $model->log->save();
+            }
+        });
+    });
+}
 }
