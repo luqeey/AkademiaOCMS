@@ -22,7 +22,7 @@ class Arrival extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['name', 'user_id'];
 
     /**
      * @var array Validation rules for attributes
@@ -57,6 +57,10 @@ class Arrival extends Model
         'updated_at'
     ];
 
+    public $belongsTo = [
+        'user' => ['RainLab\User\Models\User', 'key' => 'user_id'],
+    ];
+
     /**
      * @var array Relations
      */
@@ -64,7 +68,6 @@ class Arrival extends Model
     public $hasMany = [];
     public $hasOneThrough = [];
     public $hasManyThrough = [];
-    public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
