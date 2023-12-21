@@ -21,13 +21,12 @@ class ArrivalController extends Controller
         $user = auth()->user();
 
         $arrival = new Arrival;
-        $userResource = new UserResource($user);
         $arrival->name = post('name');
-        $arrival->user_id = post('user_id', $user->id);
+        $arrival->user_id = $user->id;
         $arrival->created_at = post('created_at');
         $arrival->save();
 
-        return ['message' => 'Arrival created'];
+        return ['user_id' => $arrival->user_id, 'name' => $arrival->name, 'created_at' => $arrival->created_at,];
     }
 
 
@@ -39,11 +38,15 @@ class ArrivalController extends Controller
         return ['user' => $userResource, 'arrivals' => $arrivals];
     }
 
-    public function destroy()
+    public function destroy($key)
     {
-        Arrival::truncate();
+        $arrival = Arrival::find($key);
+        if(!$arrival) {
+            return ['message' => 'Arrival not found'];
+        }
+        $arrival->delete();
         Event::fire('arrivals.deleted');
-        return ['message' => 'All arrivals deleted'];
+        return ['message' => 'Arrival was deleted'];
     }
 
 }
