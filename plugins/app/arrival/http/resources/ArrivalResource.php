@@ -12,7 +12,7 @@ class ArrivalResource extends JsonResource {
 
         return [
             'user' => new UserResource($this->whenLoaded('user')),
-            'user_id' => $this->user_id,
+            'user_id' => $this->id,
             'name' => $this->name,
             'created_at' => $this->created_at
         ];

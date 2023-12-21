@@ -2,6 +2,7 @@
 
 namespace App\Arrival\Http\Controllers;
 
+use App\Arrival\Controllers\Arrivals;
 use Illuminate\Routing\Controller;
 use App\Arrival\Http\Resources\ArrivalResource;
 use App\Arrival\Models\Arrival;
@@ -13,6 +14,7 @@ class ArrivalController extends Controller
     public function index()
     {
         $data = Arrival::all();
+        
         return ArrivalResource::collection($data);
     }
 
@@ -26,7 +28,7 @@ class ArrivalController extends Controller
         $arrival->created_at = post('created_at');
         $arrival->save();
 
-        return ['user_id' => $arrival->user_id, 'name' => $arrival->name, 'created_at' => $arrival->created_at,];
+        return ArrivalResource::make($arrival);
     }
 
 
@@ -35,7 +37,8 @@ class ArrivalController extends Controller
         $user = auth()->user();
         $userResource = new UserResource($user);
         $arrivals = Arrival::where('user_id', $user->id)->get();
-        return ['user' => $userResource, 'arrivals' => $arrivals];
+
+        return ArrivalResource::collection($arrivals, $userResource);
     }
 
     public function destroy($key)
@@ -46,6 +49,7 @@ class ArrivalController extends Controller
         }
         $arrival->delete();
         Event::fire('arrivals.deleted');
+
         return ['message' => 'Arrival was deleted'];
     }
 
