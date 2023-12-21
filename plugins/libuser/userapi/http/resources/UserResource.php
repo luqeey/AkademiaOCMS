@@ -14,5 +14,4 @@
                 "registered_at" => date($this->created_at)
             ];
         }
-        
     }

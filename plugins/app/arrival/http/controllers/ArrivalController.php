@@ -6,56 +6,44 @@ use Illuminate\Routing\Controller;
 use App\Arrival\Http\Resources\ArrivalResource;
 use App\Arrival\Models\Arrival;
 use Event;
+use LibUser\Userapi\Http\Resources\UserResource;
 
 class ArrivalController extends Controller 
 {
     public function index()
     {
-        try {
-            $data = Arrival::all();
-            return response()->json(ArrivalResource::collection($data));
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $data = Arrival::all();
+        return ArrivalResource::collection($data);
     }
 
     public function store()
-{
-    try {
+    {
         $user = auth()->user();
 
-        $data = request()->validate([
-            'name' => 'required|string|max:255',
-            'created_at' => 'required|date_format:Y-m-d H:i:s',
-        ]);
-
         $arrival = new Arrival;
-        $arrival->setAttribute('name', $data['name']);
-        $arrival->setAttribute('user_id', $user->id);
-        $arrival->setAttribute('created_at', $data['created_at']);
+        $userResource = new UserResource($user);
+        $arrival->name = post('name');
+        $arrival->user_id = post('user_id', $user->id);
+        $arrival->created_at = post('created_at');
         $arrival->save();
 
-        return response()->json(['message' => 'Arrival created']);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json(['validation_errors' => $e->validator->errors()], 422);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+        return ['message' => 'Arrival created'];
     }
-}
 
 
     public function getUserArrivals()
     {
         $user = auth()->user();
+        $userResource = new UserResource($user);
         $arrivals = Arrival::where('user_id', $user->id)->get();
-        return response()->json(['arrivals' => $arrivals]);
+        return ['user' => $userResource, 'arrivals' => $arrivals];
     }
 
     public function destroy()
     {
         Arrival::truncate();
         Event::fire('arrivals.deleted');
-        return response()->json(['message' => 'All arrivals deleted']);
+        return ['message' => 'All arrivals deleted'];
     }
 
 }
